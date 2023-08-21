@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:miscelaneos/config/config.dart';
-import 'package:miscelaneos/presentation/providers/app_state_provider.dart';
+
+import 'presentation/providers/providers.dart';
 
 void main() {
   runApp(const ProviderScope(child: MainApp()));
@@ -31,6 +32,9 @@ class MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // print('state: $state');
     ref.read(appStateProvider.notifier).state = state;
+    if (state == AppLifecycleState.resumed) {
+      ref.read(permissionsProvider.notifier).checkPermissions();
+    }
     /* 
       AppLifecycleState.inactive - cuando se abre otra app, cuando una app ya no esta en foco
       AppLifecycleState.paused - cuando la app esta en segundo plano

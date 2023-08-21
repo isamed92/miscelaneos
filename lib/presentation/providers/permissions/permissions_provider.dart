@@ -3,6 +3,11 @@ import 'package:permission_handler/permission_handler.dart';
 
 //state notifier provider
 
+final permissionsProvider =
+    StateNotifierProvider<PermissionsNotifier, PermissionState>((ref) {
+  return PermissionsNotifier();
+});
+
 class PermissionsNotifier extends StateNotifier<PermissionState> {
   PermissionsNotifier() : super(PermissionState()) {
     checkPermissions();
@@ -30,8 +35,41 @@ class PermissionsNotifier extends StateNotifier<PermissionState> {
 
   requestCameraAccess() async {
     final status = await Permission.camera.request();
+    state = state.copyWith(camera: status);
 
-    if (status.isGranted) {}
+    if (status == PermissionStatus.permanentlyDenied) {
+      openAppSettings();
+    }
+  }
+
+  requestPhotoLibraryAccess() async {
+    final status = await Permission.photos.request();
+
+    state = state.copyWith(photoLibrary: status);
+
+    if (status == PermissionStatus.permanentlyDenied) {
+      openAppSettings();
+    }
+  }
+
+  requestLocationAcces() async {
+    final status = await Permission.location.request();
+
+    state = state.copyWith(location: status);
+
+    if (status == PermissionStatus.permanentlyDenied) {
+      openAppSettings();
+    }
+  }
+
+  requestSensorsAccess() async {
+    final status = await Permission.sensors.request();
+
+    state = state.copyWith(sensors: status);
+
+    if (status == PermissionStatus.permanentlyDenied) {
+      openAppSettings();
+    }
   }
 }
 
