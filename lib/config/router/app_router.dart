@@ -20,4 +20,10 @@ final appRouter = GoRouter(routes: [
   GoRoute(
       path: '/gyroscope-ball',
       builder: (context, state) => const GyroscopeBallScreen()),
+  GoRoute(
+      path: '/pokemon',
+      builder: (context, state) => const PokemonScreen(),
+      routes: const [
+        // GoRoute(path: ':id', builder: (context, state) => const PokemonInfoScreen()),
+      ]),
 ], initialLocation: '/');
